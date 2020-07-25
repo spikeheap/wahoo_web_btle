@@ -17,7 +17,7 @@
 
         navigator.bluetooth.requestDevice({
           filters: [{
-            name: 'Wahoo KICKR CC7D'
+            namePrefix: 'Wahoo'
           }],
           optionalServices: [
             '0000180a-0000-1000-8000-00805f9b34fb', //Device Information
@@ -32,7 +32,6 @@
             getDeviceInformation(server),
             server.getPrimaryService('00001818-0000-1000-8000-00805f9b34fb') // Cycling Speed & Cadence
               .then(service => {
-                // Getting Battery Level Characteristic..
                 return Promise.all([
                 
                   // service.getCharacteristic('00002a5d-0000-1000-8000-00805f9b34fb') // Sensor location
