@@ -23,6 +23,7 @@
             '0000180a-0000-1000-8000-00805f9b34fb', //Device Information
             '00001816-0000-1000-8000-00805f9b34fb', // Cycling Speed & Cadence
             '00001818-0000-1000-8000-00805f9b34fb', // Cycling Power
+            '00001826-0000-1000-8000-00805f9b34fb', // Fitness Machine
           ]
         })
         .then(device => device.gatt.connect())        
@@ -30,19 +31,18 @@
           return Promise.all([
             getDeviceInformation(server),
             server.getPrimaryService('00001818-0000-1000-8000-00805f9b34fb') // Cycling Speed & Cadence
-              .then(service => { console.log(service); return service})
               .then(service => {
                 // Getting Battery Level Characteristic..
                 return Promise.all([
                 
-                  service.getCharacteristic('00002a5d-0000-1000-8000-00805f9b34fb') // Sensor location
-                    .then(characteristic => {
-                      // Set up event listener for when characteristic value changes.
-                      characteristic.addEventListener('characteristicvaluechanged', (event) => { 
-                        console.log("Sensor location", characteristic.uuid, event.target.value.getUint8(0) ) 
-                      });
-                      return characteristic.readValue()
-                    }),  
+                  // service.getCharacteristic('00002a5d-0000-1000-8000-00805f9b34fb') // Sensor location
+                  //   .then(characteristic => {
+                  //     // Set up event listener for when characteristic value changes.
+                  //     characteristic.addEventListener('characteristicvaluechanged', (event) => { 
+                  //       console.log("Sensor location", characteristic.uuid, event.target.value.getUint8(0) ) 
+                  //     });
+                  //     return characteristic.readValue()
+                  //   }),  
 
                   service.getCharacteristic('00002a63-0000-1000-8000-00805f9b34fb') // Cycling Power Measurement (NOTIFY)
                     .then(characteristic => {
@@ -52,7 +52,7 @@
                           let rawMeasurement = event.target.value
                           characteristic.addEventListener('characteristicvaluechanged', (event) => {
                             const flagsString = dec2bin(event.target.value.getUint16(0));
-                            const instant_power = event.target.value.getInt16(2)  // Resolution is 1 watts
+                            const instant_power = event.target.value.getInt16(2, true)  // Resolution is 1 watts
                             
                             instant_power_heading.innerHTML = `${instant_power} watts`
                             console.log("Cycling Power", flagsString, instant_power ) 
