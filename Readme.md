@@ -12,6 +12,11 @@ We didn't get that close, but the hope was to tie this in with WebSockets to inc
 4. See your instantaneous power reading
 5. Check the console for additional information and debugging logs
 
+# Caveats
+
+- This is not tested or production-ready in any way!
+- We didn't get power control working. It looks like Wahoo Kickr doesn't support the Fitness Machine profile/service (FTMS), and I've asked [on Twitter](https://twitter.com/spikeheap/status/1287048498710487040).
+
 # MIT License
 
 Copyright 2020 Ryan Brooks
